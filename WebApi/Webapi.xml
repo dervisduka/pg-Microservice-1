@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:WebApi.Controllers.OrderController.GetAll">
+            <summary>
+            This method gets all Orders and returns them as a list
+            Version 1
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.ProductController.GetAll">
+            <summary>
+            This method gets all products and returns them as a list
+            Version 1
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.ProductController.GetAll2">
+            <summary>
+            This method gets all products and returns them as a list
+            Version 2
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Filters.CustomPermissionFilter.#ctor(System.String[],Application.Common.Interfaces.IPermissions)">
+            <summary>
+            kontrollon aksesin ne objekt dhe ne metoda per objekt
+            Parametri ne hyrje _akseset eshte nje liste stringjes qe ka dy trajta
+            1-EmerObjekti.llojpermissioni.permisison . Psh Product.Access.CanGet
+            2-EmerObjekti.llojpermissioni.Metoda.  Psh Product.Method.Metoda1
+            
+            per keto dy trajta ne varesi te llojit therritet permissionHelper qe kthen true ose false
+            metoda do autorizoje vetem nqs nuk ka asnje false
+            </summary>
+            <param name="akseset"></param>
+            <param name="permissionHelper"></param>
+        </member>
+        <member name="M:WebApi.Services.PermissionHelper.HasAccessInMethod(System.String,System.String,System.String)">
+            <summary>
+            It gets obejct.method in entrance and returns true if actor has access to this 
+            </summary>
+            <param name="methodName"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:WebApi.Services.PermissionHelper.CheckForGenericGlobalPermission(System.String,System.String)">
+            <summary>
+            This method will return true 
+            1-if this actor has a permission that has a hasAccessToMethod named : microservice.controller.action  
+            Example "Generic.1.1.1.0.pg_Sample:Values:Get"
+            2-if this actor for this microservice and this controller  has the ALL permission in any of the methods
+            of any of the objects. 
+            Example "Generic.1.1.1.0.pg_Sample:Values:ALL"
+            3-if this actor for this microservice has the ALL permission in any of the methods
+            of any of the objects. 
+            Example "Generic.1.1.1.0.pg_Sample:ALL"
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
