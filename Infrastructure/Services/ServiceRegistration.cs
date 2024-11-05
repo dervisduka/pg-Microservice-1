@@ -43,6 +43,7 @@ namespace Infrastructure.Services
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProduct2Repository, Product2Repository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IBillRepository, BillRepository>();
 
         }
     }

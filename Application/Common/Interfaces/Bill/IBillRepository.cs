@@ -11,7 +11,6 @@ namespace Application.Common.Interfaces
         Task<PaginatedList<Bill>> GetBillsByCriteria(BillsWithPaginationCriteria criteria);
 
         Task<Bill> AddAsyncTransactional(Bill entity);
-        Task<bool> SaveChangesAsync(CancellationToken cancellationToken);
 
     }
 }

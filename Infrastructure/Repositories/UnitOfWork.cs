@@ -13,11 +13,13 @@ namespace Infrastructure.Repositories
         public IProductRepository Products { get; }
         public IProduct2Repository Products2 { get; }
 
+        public IBillRepository Bills { get; }
         public UnitOfWork(
             DbSession session,
             IMediator mediator,
             IProductRepository productRepository,
-            IProduct2Repository product2Repository)
+            IProduct2Repository product2Repository,
+            IBillRepository billRepository)
 
 
         {
@@ -26,6 +28,7 @@ namespace Infrastructure.Repositories
             _mediator = mediator;
             Products = productRepository;
             Products2 = product2Repository;
+            Bills = billRepository;
         }
 
 
