@@ -8,6 +8,5 @@ namespace Domain.Entities
         [Column(TypeName = "decimal(18,4)")]
         public Decimal Amount { get; set; }
         public int Status { get; set; }
-
     }
 }

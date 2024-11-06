@@ -32,13 +32,13 @@ namespace WebApi.Controllers
         [HttpGet]
         [MapToApiVersion("1.0")]
 
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             //test info log in controller
             _logger.LogInformation("[Bill] V1 entered in getAll");
             try
             {
-                int i = 0, j = 0;
+                int i = 0, j = 1;
                 int k = i / j;
             }
             catch (Exception e)
@@ -47,7 +47,7 @@ namespace WebApi.Controllers
                 _logger.LogError(e, "[Bill] V1 entered in catch");
             }
 
-            var data = Mediator.Send(new GetAllBillsEmptyCriteria());
+            var data = await Mediator.Send(new GetAllBillsEmptyCriteria());
 
             return Ok(data);
         }
@@ -100,10 +100,10 @@ namespace WebApi.Controllers
             return Ok(await Mediator.Send(new DeleteBillCommand(id)));
         }
         [HttpPut]
-        public async Task<IActionResult> Update(Bill prod)
+        public async Task<IActionResult> Update(int id,BillsUpdateDto prod)
         {
 
-            return Ok(await Mediator.Send(new UpdateBillCommand(prod)));
+            return Ok(await Mediator.Send(new UpdateBillCommand(id,prod)));
         }
 
         [HttpGet("GetBillsWithPagination")]

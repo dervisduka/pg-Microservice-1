@@ -34,17 +34,14 @@ namespace Application.Entities.Bills.Commands
             {
                 Amount = request.Amount,
                 Status = request.Status,
-                CreatedBy = Int32.Parse(_currentUserService.UserId),
+
                 CreatedDate = DateTime.Now
             };
-
-
-            Bill toReturn = await _unit.Bill.AddAsyncTransactional(entity);
 
             //int i = 0, j = 0;
             //int k = i / j;
 
-            Bill toReturn2 = await _unit.Bill.AddAsyncTransactional(entity);
+            Bill toReturn = await _unit.Bill.AddAsyncTransactional(entity);
             if (await _unit.CommitThings())
             {
                 //bejme publish domain events per cdo objekt qe mori pjese ne kete komande

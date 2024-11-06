@@ -1,5 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.DTO;
 using Domain.Entities;
 using Domain.Events;
 using MediatR;
@@ -7,8 +8,16 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Entities.Bills.Commands
 {
-    public record UpdateBillCommand(Bill Bill) : IRequest<Bill>;
-
+    public class UpdateBillCommand : IRequest<Bill>
+    {
+        public int Id { get; }
+        public BillsUpdateDto orderToUpdate { get; }
+        public UpdateBillCommand(int id, BillsUpdateDto request)
+        {
+            Id = id;
+            orderToUpdate = request;
+        }
+    }
     public class UpdateBillCommandHandler : IRequestHandler<UpdateBillCommand, Bill>
     {
         private readonly IUnitOfWork _unit;
@@ -28,18 +37,17 @@ namespace Application.Entities.Bills.Commands
         public async Task<Bill> Handle(UpdateBillCommand request, CancellationToken cancellationToken)
         {
             var entity = await _unit.Bill
-                .GetByIdAsync(request.Bill.Id);
+                .GetByIdAsync(request.Id);
 
             if (entity == null)
             {
-                _logger.LogInformation("[UpdateBillCommandHandler] Bill with Id={@Id} not found!", request.Bill.Id);
-                throw new NotFoundException(nameof(Bill), request.Bill.Id);
+                _logger.LogInformation("[UpdateBillCommandHandler] Bill with Id={@Id} not found!", request.Id);
+                throw new NotFoundException(nameof(Bill), request.Id);
             }
 
-            entity.Amount = request.Bill.Amount;
-            entity.Status = request.Bill.Status;
+            entity.Amount = request.orderToUpdate.Amount;
+            entity.Status = request.orderToUpdate.Status;
             entity.ModifiedDate = DateTime.Now;
-            entity.ModifiedBy = Int32.Parse(_currentUserService.UserId);
 
 
 

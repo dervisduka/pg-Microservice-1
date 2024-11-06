@@ -27,8 +27,9 @@ namespace Infrastructure.Repositories
         public async Task<Bill> AddAsync(Bill entity)
         {
             entity.CreatedDate = DateTime.Now;
-            var sql = "Insert into Bills (Name,Description,Barcode,Rate,AddedOn) VALUES (@Name,@Description,@Barcode,@Rate,@AddedOn);" +
-                "SELECT CAST(SCOPE_IDENTITY() as int)";
+            var sql = "INSERT INTO Bills (Amount, Status, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy) " +
+              "VALUES (@Amount, @Status, @CreatedDate, @CreatedBy, @ModifiedDate, @ModifiedBy); " +
+              "SELECT CAST(SCOPE_IDENTITY() as int)";
             using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
@@ -38,19 +39,19 @@ namespace Infrastructure.Repositories
             }
 
         }
-
         public async Task<Bill> AddAsyncTransactional(Bill entity)
         {
-
             entity.CreatedDate = DateTime.Now;
-            var sql = "Insert into Bills (Name,Description,Barcode,Rate,CreatedDate,CreatedBy) VALUES (@Name,@Description,@Barcode,@Rate,@CreatedDate,@CreatedBy);" +
-                "SELECT CAST(SCOPE_IDENTITY() as int)";
 
+            var sql = "INSERT INTO Bills (Amount, Status, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy) " +
+                      "VALUES (@Amount, @Status, @CreatedDate, @CreatedBy, @ModifiedDate, @ModifiedBy); " +
+                      "SELECT CAST(SCOPE_IDENTITY() as int)";
 
+            // Execute the query and retrieve the new Id
             var result = await _session.Connection.QuerySingleAsync<int>(sql, entity, _session.Transaction);
             entity.Id = result;
-            return entity;
 
+            return entity;
         }
 
         public async Task<int> DeleteAsync(int id)
@@ -88,8 +89,7 @@ namespace Infrastructure.Repositories
         public async Task<Bill?> UpdateAsync(Bill entity)
         {
             entity.ModifiedDate = DateTime.Now;
-            entity.ModifiedBy = Int32.Parse(_currentUserService.UserId);
-            var sql = "UPDATE Bills SET Name = @Name, Description = @Description, Barcode = @Barcode, Rate = @Rate, ModifiedDate = @ModifiedDate,ModifiedBy=@ModifiedBy   WHERE Id = @Id and timestamp=@timestamp";
+            var sql = "UPDATE Bills SET Amount = @Amount, Status = @Status, CreatedDate = @CreatedDate, CreatedBy = @CreatedBy, ModifiedDate = @ModifiedDate,ModifiedBy=@ModifiedBy   WHERE Id = @Id";
             using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
@@ -109,7 +109,7 @@ namespace Infrastructure.Repositories
 
             using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
             {
-                var query = @"SELECT [Id],[Name],[Barcode],[Description],[Rate],[CreatedDate],[ModifiedDate],[timestamp] 
+                var query = @"SELECT [Amount], [Status], [CreatedDate], [CreatedBy], [ModifiedDate], [ModifiedBy] 
             FROM [dbo].[Bills] " + whereStatement +
                 @" ORDER BY [Id] DESC
             OFFSET (@pageNumber - 1) * @PageSize ROWS
