@@ -15,11 +15,18 @@ namespace Infrastructure.Persistence
         }
 
         public DbSet<Order> Orders { get; set; }
+
+        public DbSet<Alcohol> Alcohols { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
             modelBuilder.Entity<Order>()
            .Property(p => p.timestamp)
+           .IsRowVersion()
+           .IsRequired(false);
+
+            modelBuilder.Entity<Alcohol>()
+            .Property(p => p.timestamp)
            .IsRowVersion()
            .IsRequired(false);
 
