@@ -4,6 +4,13 @@
         <name>WebApi</name>
     </assembly>
     <members>
+        <member name="M:WebApi.Controllers.AlcoholController.GetAll">
+            <summary>
+            This method gets all Alcohols and returns them as a list
+            Version 1
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:WebApi.Controllers.BillController.GetAll2">
             <summary>
             This method gets all Bills and returns them as a list
